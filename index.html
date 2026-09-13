@@ -4,8 +4,10 @@
 :root{--blue:#004B8D;--blue2:#007ACE;--orange:#FF6600;--bg:#f4f6f8;--card:#fff;--line:#d9dee3;--txt:#2b3138;--muted:#6b7783}
 *{box-sizing:border-box}
 body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:var(--bg);color:var(--txt);margin:0}
-header{background:var(--blue);color:#fff;padding:16px 20px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
-header .top{height:4px;background:var(--orange);margin:-16px -20px 12px}
+header{position:relative;overflow:hidden;background:linear-gradient(160deg,#004B8D,#007ACE);color:#fff;padding:18px 20px 42px}
+header .top{height:4px;background:var(--orange);margin:-18px -20px 14px}
+header .mtn{position:absolute;left:0;right:0;bottom:0;width:100%;height:70px;display:block}
+header .hc{position:relative;z-index:2}
 header h1{font-size:1.35rem;margin:0;font-weight:700}
 header .sub{color:#cfe2f3;font-size:.85rem;margin-top:4px}
 .wrap{padding:18px 20px;max-width:1180px;margin:0 auto}
@@ -20,6 +22,7 @@ button,select{font-family:inherit}
 .btn.ghost{background:#fff;color:var(--blue);border:1px solid var(--blue)}
 .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
 select.week{background:#fff;color:var(--txt);border:1px solid var(--line);border-radius:6px;padding:8px 12px;font-size:.9rem}
+input.bem{flex:1;min-width:200px;background:#fff;color:var(--txt);border:1px solid var(--line);border-radius:6px;padding:8px}
 .stats{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px}
 .stat{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--blue2);border-radius:8px;padding:10px 14px;min-width:96px}
 .stat b{font-size:1.25rem;display:block;color:var(--blue)}.stat span{color:var(--muted);font-size:.72rem}
@@ -27,7 +30,7 @@ select.week{background:#fff;color:var(--txt);border:1px solid var(--line);border
 #chart{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px;margin-bottom:14px}
 table{width:100%;border-collapse:collapse;background:var(--card);border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)}
 th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:.83rem}
-th{background:var(--blue);color:#fff;font-weight:600;position:sticky;top:0}
+th{background:var(--blue);color:#fff;font-weight:600}
 .ov td{cursor:pointer}.ov tr:hover td{background:#eef5fb}
 .ov .wk{font-weight:700;color:var(--blue)}
 .cell{border-radius:4px;padding:3px 5px;display:block;font-size:.78rem;line-height:1.2}
@@ -45,23 +48,33 @@ input.km{width:58px;background:#fff;color:var(--txt);border:1px solid var(--line
 .balance{margin:10px 0;padding:10px 14px;border-radius:8px;font-size:.9rem}
 .balance.ok{background:#e6f5f1;border:1px solid #14b8a6;color:#0d6b5f}
 .balance.bad{background:#fff3ec;border:1px solid var(--orange);color:#a5480a}
+.lg h2{color:var(--blue);margin:6px 0 10px}.lg h3{color:var(--blue2);margin:18px 0 6px}
+.lg ul{font-size:.85rem;line-height:1.5;color:var(--txt)}
 .hide{display:none}
 @media(max-width:700px){textarea{min-width:120px}}
 </style></head><body>
 <header><div class="top"></div>
-<h1>Jungfrau-Marathon 2027 &ndash; Trainingsplan</h1>
-<div class="sub">Ziel 3:40 h &middot; 43 Wochen &middot; Gesamtansicht &amp; Wochenplanung mit Drag &amp; Drop</div></header>
+<svg class="mtn" viewBox="0 0 1200 70" preserveAspectRatio="none">
+<polygon points="0,70 200,30 380,58 560,18 760,60 980,26 1200,50 1200,70" fill="#ffffff" opacity="0.12"/>
+<polygon points="0,70 150,44 300,66 470,30 560,50 700,14 840,58 1000,36 1160,64 1200,52 1200,70" fill="#0a5ea3"/>
+<polygon points="686,30 700,14 714,30 707,28 700,22 693,28" fill="#ffffff" opacity="0.95"/>
+<polygon points="458,42 470,30 482,42 476,40 470,35 464,40" fill="#ffffff" opacity="0.9"/>
+<polygon points="968,48 980,36 992,48 986,46 980,41 974,46" fill="#ffffff" opacity="0.85"/>
+</svg>
+<div class="hc"><h1>&#127956; Jungfrau-Marathon 2027 &ndash; Trainingsplan</h1>
+<div class="sub">Ziel 3:40 h &middot; 43 Wochen &middot; Gesamtansicht, Wochenplanung mit Drag &amp; Drop, Legende</div></div></header>
 <div class="wrap">
 <div id="status">Lade...</div>
 <div class="tabs">
 <button class="tab active" id="tabOv">Gesamtplan</button>
 <button class="tab" id="tabWk">Woche im Detail</button>
+<button class="tab" id="tabLg">Legende</button>
 </div>
 
 <div id="ovView">
 <div class="bar"><span class="phase">Klicke auf eine Woche, um sie im Detail zu bearbeiten.</span></div>
 <div style="overflow-x:auto"><table class="ov"><thead><tr>
-<th>Wo</th><th>Phase</th><th>Datum</th><th>Mo</th><th>Di</th><th>Mi</th><th>Do</th><th>Fr</th><th>Sa</th><th>So</th><th>km</th><th>HM</th>
+<th>Wo</th><th>Phase</th><th>Datum</th><th>Mo</th><th>Di</th><th>Mi</th><th>Do</th><th>Fr</th><th>Sa</th><th>So</th><th>km</th><th>HM</th><th>Bemerkung</th>
 </tr></thead><tbody id="ovBody"></tbody></table></div>
 </div>
 
@@ -72,6 +85,7 @@ input.km{width:58px;background:#fff;color:var(--txt);border:1px solid var(--line
 <button class="btn ghost" id="reset">Woche zuruecksetzen</button>
 <button class="btn ghost" id="resetAll">Alles zuruecksetzen</button>
 </div>
+<div class="bar"><label style="font-size:.85rem;color:#6b7783;flex:1;display:flex;align-items:center;gap:6px">Bemerkung:<input class="bem" id="bem" placeholder="Notiz zur Woche..."></label></div>
 <div class="phase" id="phase"></div>
 <div class="stats">
 <div class="stat"><b id="kmDone">0</b><span>km erledigt</span></div>
@@ -84,8 +98,49 @@ input.km{width:58px;background:#fff;color:var(--txt);border:1px solid var(--line
 <div class="balance" id="balance"></div>
 <div class="legend" id="legend"></div>
 <div style="overflow-x:auto"><table><thead><tr><th></th><th>OK</th><th>Tag</th><th>Einheit</th><th>km</th><th>Typ</th><th>Last</th></tr></thead><tbody id="body"></tbody></table></div>
-<p style="color:#6b7783;font-size:.8rem">Tipp: Zeile am Griff &#9776; packen und verschieben. Der Typ wird automatisch aus dem Text erkannt.</p>
+<p style="color:#6b7783;font-size:.8rem">Tipp: Zeile am Griff &#9776; packen und verschieben. Der Typ wird automatisch aus dem Text erkannt. Bei Schwelle/Intervall zaehlen die Wiederholungs-km + 6 km Ein-/Auslaufen.</p>
 </div>
+
+<div id="lgView" class="hide" class="lg">
+<div class="lg">
+<h2>Legende &amp; Pace-Vorgaben</h2>
+<table><thead><tr><th>Kuerzel</th><th>Bedeutung</th><th>Pace / Intensitaet</th></tr></thead><tbody>
+<tr><td><b>ESR</b></td><td>Easy Steady Run &ndash; lockerer Dauerlauf</td><td>5:00-5:40/km</td></tr>
+<tr><td><b>LSR</b></td><td>Long Steady Run &ndash; langer Dauerlauf, Grundlage</td><td>4:15-4:35/km</td></tr>
+<tr><td><b>IVT</b></td><td>Intervall Training &ndash; kurze, schnelle Intervalle</td><td>3:10-3:30/km</td></tr>
+<tr><td><b>ST DL2</b></td><td>Speed/Schwellentraining (Tempo-km-Wdh.)</td><td>3:30-3:40/km</td></tr>
+<tr><td><b>ST DL2 Berg</b></td><td>Schwellen-Einheit im Anstieg (kraftbetont)</td><td>3:40-4:10/km +HM</td></tr>
+<tr><td><b>Tempo</b></td><td>Tempolauf Renntempo bis leicht schneller</td><td>3:40-4:00/km</td></tr>
+<tr><td><b>Fartlek/Hills</b></td><td>Tempowechsel- bzw. Huegeltraining</td><td>4:00-4:20/km wechselnd</td></tr>
+<tr><td><b>Kraft</b></td><td>Kraft- und Stabitraining</td><td>periodisiert: Maxkraft &rarr; Kraftausdauer/Plyo &rarr; Erhaltung</td></tr>
+<tr><td><b>Ausschuetteln</b></td><td>Ganz lockerer Trabtag vor Wettkampf</td><td>5:00-5:30/km</td></tr>
+<tr><td><b>Einlaufen</b></td><td>Kurzer Lauf am Renntag mit Steigerungen</td><td>5:00-5:30/km +Steig.</td></tr>
+<tr><td><b>Off</b></td><td>Ruhetag / aktive Erholung</td><td>-</td></tr>
+<tr><td><b>HM</b></td><td>Hoehenmeter im jeweiligen Lauf</td><td>-</td></tr>
+</tbody></table>
+<h3>Hoehenmeter-Ausfuehrung</h3>
+<ul>
+<li><b>am Stueck:</b> Hoehenmeter in einem zusammenhaengenden Anstieg (Jungfrau-Spezifik, ab km 25-30 langer Berg).</li>
+<li><b>coupiert:</b> Hoehenmeter ueber welliges Profil verteilt (staendiges Auf und Ab). Trainiert Rhythmuswechsel.</li>
+<li><b>flach:</b> Kaum Hoehenmeter (Bahn/Ebene) &ndash; fuer Tempo-/Intervallqualitaet ohne Ermuedung.</li>
+</ul>
+<h3>km-Berechnung Schwelle &amp; Intervall</h3>
+<ul>
+<li>Netto-Distanz aus den Wiederholungen (z.B. DL2 3x2k = 6 km, IVT 6x600m = 3,6 km)</li>
+<li><b>+ 6 km</b> fuer Ein- und Auslaufen werden automatisch dazugerechnet.</li>
+</ul>
+<h3>Trainingsprinzipien</h3>
+<ul>
+<li>Periodisierung: Grundlage &rarr; Aufbau &rarr; Berg-Aufbau &rarr; Marathon-spezifisch &rarr; Taper</li>
+<li>Samstag als 2. Qualitaetstag mit ST DL2 &ndash; in Bergphasen als Anstiegs-DL2</li>
+<li>Long Run waechst progressiv; HM ab Berg-Aufbau bewusst 'am Stueck'</li>
+<li>Polarisierung 80/20: Easy echt langsam, damit Schluesseleinheiten hart laufbar sind</li>
+<li>3:1-Deload-Rhythmus zur Superkompensation (W10, W38)</li>
+<li>Power-Hiking an Rampen &gt;15%; Fueling 60-90g KH/h in langen Berg-Longruns</li>
+</ul>
+</div>
+</div>
+
 </div>
 <script>
 var S=document.getElementById("status");
@@ -93,7 +148,7 @@ try{
 var COL={easy:"#3b82f6",long:"#ef4444",interval:"#a855f7",threshold:"#f59e0b",tempo:"#ec4899",fartlek:"#14b8a6",strength:"#64748b",rest:"#9aa5b1",race:"#FF6600"};
 var LAB={easy:"Easy",long:"Long Run",interval:"Intervall",threshold:"Schwelle",tempo:"Tempo",fartlek:"Fartlek",strength:"Kraft",rest:"Ruhe",race:"Wettkampf"};
 var INT={rest:0,strength:2,easy:1,long:4,interval:4,threshold:3,tempo:3,fartlek:3,race:5};
-var WD=["Mo","Di","Mi","Do","Fr","Sa","So"],KEY="stefan-jf-v7";
+var WD=["Mo","Di","Mi","Do","Fr","Sa","So"],KEY="stefan-jf-v8";
 function cls(t){t=(t||"").toUpperCase();if(!t.replace(/\s/g,""))return"rest";
 if(t.indexOf("RENN-SIM")>-1)return"long";if(t.indexOf("RACE")>-1)return"race";
 if(t.indexOf("OFF")===0||t.indexOf("AUSROLLEN")===0)return"rest";
@@ -101,7 +156,12 @@ if(t.indexOf("K-")===0||t.indexOf("KRAFT")>-1)return"strength";
 if(t.indexOf("IVT")>-1)return"interval";if(t.indexOf("TEMPO")>-1)return"tempo";
 if(t.indexOf("FARTLEK")>-1)return"fartlek";if(t.indexOf("DL2")>-1)return"threshold";
 if(t.indexOf("LSR")>-1)return"long";return"easy";}
-function km(t){var m=(t||"").match(/(\d+[.,]?\d*)\s*km/i);return m?parseFloat(m[1].replace(",",".")):0;}
+function repKm(t){var total=0,found=false,re=/(\d+)\s*x\s*(\d+(?:[.,]\d+)?)\s*(km|k|m)/gi,m;
+while((m=re.exec(t))!==null){var reps=parseInt(m[1],10);var val=parseFloat(m[2].replace(",","."));
+var u=m[3].toLowerCase();var d=(u==="m")?val/1000:val;total+=reps*d;found=true;}
+return found?total:0;}
+function km(t){var c=cls(t);if(c==="threshold"||c==="interval"){var r=repKm(t);if(r>0)return Math.round((r+6)*10)/10;}
+var m=(t||"").match(/(\d+[.,]?\d*)\s*km/i);return m?parseFloat(m[1].replace(",",".")):0;}
 function hm(t){var m=(t||"").match(/HM\s*(\d{2,4})/i);return m?parseInt(m[1],10):0;}
 var DATA=
 "1|Grundlage 1|16.11.26||K-Max~ESR 10km~ESR 8km~ESR 9km~Off~DL2 2x2k~LSR 16km HM150\n"+
@@ -158,10 +218,13 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(weeks));}catch(e){}}
 function esc(s){return(s||"").replace(/</g,"&lt;");}
 function showView(v){document.getElementById("ovView").className=v==="ov"?"":"hide";
 document.getElementById("wkView").className=v==="wk"?"":"hide";
+document.getElementById("lgView").className=v==="lg"?"":"hide";
 document.getElementById("tabOv").className="tab"+(v==="ov"?" active":"");
-document.getElementById("tabWk").className="tab"+(v==="wk"?" active":"");}
+document.getElementById("tabWk").className="tab"+(v==="wk"?" active":"");
+document.getElementById("tabLg").className="tab"+(v==="lg"?" active":"");}
 document.getElementById("tabOv").onclick=function(){showView("ov");renderOv();};
 document.getElementById("tabWk").onclick=function(){showView("wk");render();};
+document.getElementById("tabLg").onclick=function(){showView("lg");};
 function renderOv(){var b=document.getElementById("ovBody");b.innerHTML="";
 weeks.forEach(function(w,wi){var tr=document.createElement("tr");
 var tot=w.days.reduce(function(s,d){return s+d.km;},0);
@@ -169,16 +232,18 @@ var th=w.days.reduce(function(s,d){return s+d.hm;},0);
 var cells="";w.days.forEach(function(d){var t=cls(d.text);
 cells+='<td><span class="cell" style="background:'+COL[t]+'22;border-left:3px solid '+COL[t]+'">'+esc(d.text)+'</span></td>';});
 tr.innerHTML='<td class="wk">'+w.woche+'</td><td>'+esc(w.phase)+'</td><td>'+esc(w.datum)+'</td>'+cells+
-'<td><b>'+Math.round(tot)+'</b></td><td>'+th+'</td>';
+'<td><b>'+Math.round(tot)+'</b></td><td>'+th+'</td><td>'+esc(w.bemerkung)+'</td>';
 tr.onclick=function(){cur=wi;showView("wk");render();};
 b.appendChild(tr);});}
 function sel(){var s=document.getElementById("weekSel");s.innerHTML="";
 weeks.forEach(function(w,i){var o=document.createElement("option");o.value=i;o.textContent="Woche "+w.woche+" - "+w.phase;s.appendChild(o);});s.value=cur;}
 document.getElementById("weekSel").addEventListener("change",function(e){cur=+e.target.value;render();});
+document.getElementById("bem").onchange=function(e){weeks[cur].bemerkung=e.target.value;save();};
 function leg(){var l=document.getElementById("legend");l.innerHTML="";
 Object.keys(LAB).forEach(function(k){l.innerHTML+='<span><i class="dot" style="background:'+COL[k]+'"></i>'+LAB[k]+'</span>';});}
 function render(){var w=weeks[cur];if(!w)return;document.getElementById("weekSel").value=cur;
-document.getElementById("phase").textContent="Phase: "+w.phase+" - Start "+w.datum+(w.bemerkung?" - "+w.bemerkung:"");
+document.getElementById("bem").value=w.bemerkung||"";
+document.getElementById("phase").textContent="Phase: "+w.phase+" - Start "+w.datum;
 var b=document.getElementById("body");b.innerHTML="";
 w.days.forEach(function(d,i){var tr=document.createElement("tr");var t=cls(d.text);
 tr.className="row"+(d.done?" done":"");tr.draggable=true;
