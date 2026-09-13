@@ -1,37 +1,77 @@
 <!DOCTYPE html><html lang="de"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jungfrau-Marathon 2027 Trainingsplan</title><style>
-body{font-family:Arial,sans-serif;background:#0f1720;color:#e7eef5;margin:0;padding:16px}
-h1{font-size:1.3rem;margin:0 0 4px}.sub{color:#93a4b3;font-size:.85rem;margin-bottom:8px}
-#status{padding:8px 12px;border-radius:8px;margin-bottom:12px;font-size:.9rem;background:#14532d}
-#status.bad{background:#7f1d1d}
-.bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
-button,select{background:#1b2733;color:#e7eef5;border:1px solid #2c3a48;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:.9rem}
-.stats{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px}
-.stat{background:#1b2733;border:1px solid #2c3a48;border-radius:12px;padding:10px 14px;min-width:100px}
-.stat b{font-size:1.3rem;display:block}.stat span{color:#93a4b3;font-size:.75rem}
-.phase{color:#93a4b3;font-size:.9rem;margin:2px 0 10px}
-#chart{background:#1b2733;border:1px solid #2c3a48;border-radius:12px;padding:10px;margin-bottom:12px}
-table{width:100%;border-collapse:collapse;background:#1b2733;border-radius:12px;overflow:hidden}
-th,td{padding:8px 10px;border-bottom:1px solid #2c3a48;text-align:left;vertical-align:top;font-size:.85rem}
-th{background:#17222d;color:#93a4b3}tr.row{cursor:grab}tr.dragover{outline:2px dashed #5b7183}
-tr.warn td{background:rgba(239,68,68,.14)}.wd{font-weight:700}.handle{cursor:grab;color:#93a4b3}
-textarea{width:100%;min-width:200px;min-height:44px;background:#121c26;color:#e7eef5;border:1px solid #2c3a48;border-radius:6px;padding:5px;font:inherit;font-size:.83rem}
-input.km{width:56px;background:#121c26;color:#e7eef5;border:1px solid #2c3a48;border-radius:6px;padding:5px}
-.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.72rem;color:#0b1116;font-weight:700}
+:root{--blue:#004B8D;--blue2:#007ACE;--orange:#FF6600;--bg:#f4f6f8;--card:#fff;--line:#d9dee3;--txt:#2b3138;--muted:#6b7783}
+*{box-sizing:border-box}
+body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:var(--bg);color:var(--txt);margin:0}
+header{background:var(--blue);color:#fff;padding:16px 20px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+header .top{height:4px;background:var(--orange);margin:-16px -20px 12px}
+header h1{font-size:1.35rem;margin:0;font-weight:700}
+header .sub{color:#cfe2f3;font-size:.85rem;margin-top:4px}
+.wrap{padding:18px 20px;max-width:1180px;margin:0 auto}
+#status{padding:8px 12px;border-radius:6px;margin-bottom:14px;font-size:.9rem;background:#e3f0e3;color:#256029;border:1px solid #b6d7b6}
+#status.bad{background:#fdecea;color:#a12b20;border-color:#f2b8b2}
+.tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.tab{background:#fff;color:var(--blue);border:1px solid var(--blue);border-radius:6px;padding:8px 16px;cursor:pointer;font-size:.9rem;font-weight:600}
+.tab.active{background:var(--blue);color:#fff}
+button,select{font-family:inherit}
+.btn{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:8px 14px;cursor:pointer;font-size:.88rem;font-weight:600}
+.btn.orange{background:var(--orange)}
+.btn.ghost{background:#fff;color:var(--blue);border:1px solid var(--blue)}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+select.week{background:#fff;color:var(--txt);border:1px solid var(--line);border-radius:6px;padding:8px 12px;font-size:.9rem}
+.stats{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+.stat{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--blue2);border-radius:8px;padding:10px 14px;min-width:96px}
+.stat b{font-size:1.25rem;display:block;color:var(--blue)}.stat span{color:var(--muted);font-size:.72rem}
+.phase{color:var(--muted);font-size:.9rem;margin:2px 0 10px}
+#chart{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px;margin-bottom:14px}
+table{width:100%;border-collapse:collapse;background:var(--card);border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:.83rem}
+th{background:var(--blue);color:#fff;font-weight:600;position:sticky;top:0}
+.ov td{cursor:pointer}.ov tr:hover td{background:#eef5fb}
+.ov .wk{font-weight:700;color:var(--blue)}
+.cell{border-radius:4px;padding:3px 5px;display:block;font-size:.78rem;line-height:1.2}
+tr.row{cursor:grab}tr.row:hover td{background:#f6f9fc}
+tr.dragover td{box-shadow:inset 0 3px 0 var(--orange)}
+tr.warn td{background:#fff3ec}
+.wd{font-weight:700;color:var(--blue);white-space:nowrap}
+.handle{cursor:grab;color:var(--muted);font-size:1.1rem;user-select:none}
+textarea{width:100%;min-width:220px;min-height:42px;background:#fff;color:var(--txt);border:1px solid var(--line);border-radius:6px;padding:6px;font:inherit;font-size:.82rem}
+input.km{width:58px;background:#fff;color:var(--txt);border:1px solid var(--line);border-radius:6px;padding:6px}
+.pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:.72rem;color:#fff;font-weight:700}
 .done td{opacity:.5}.done textarea{text-decoration:line-through}
-.legend{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0;font-size:.72rem;color:#93a4b3}
-.legend span{display:inline-flex;align-items:center;gap:5px}.dot{width:10px;height:10px;border-radius:3px}
-.balance{margin:10px 0;padding:10px 14px;border-radius:10px;font-size:.9rem}
-.balance.ok{background:rgba(20,184,166,.14);border:1px solid #14b8a6}
-.balance.bad{background:rgba(239,68,68,.14);border:1px solid #ef4444}</style></head><body>
-<h1>Jungfrau-Marathon 2027 - Trainingsplan</h1>
-<div class="sub">Ziel 3:40h - 43 Wochen - bearbeiten, Drag&amp;Drop, Balance-Pruefung, HM-Kennzahl, lokal gespeichert.</div>
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0;font-size:.72rem;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:5px}.dot{width:11px;height:11px;border-radius:3px}
+.balance{margin:10px 0;padding:10px 14px;border-radius:8px;font-size:.9rem}
+.balance.ok{background:#e6f5f1;border:1px solid #14b8a6;color:#0d6b5f}
+.balance.bad{background:#fff3ec;border:1px solid var(--orange);color:#a5480a}
+.hide{display:none}
+@media(max-width:700px){textarea{min-width:120px}}
+</style></head><body>
+<header><div class="top"></div>
+<h1>Jungfrau-Marathon 2027 &ndash; Trainingsplan</h1>
+<div class="sub">Ziel 3:40 h &middot; 43 Wochen &middot; Gesamtansicht &amp; Wochenplanung mit Drag &amp; Drop</div></header>
+<div class="wrap">
 <div id="status">Lade...</div>
-<div class="bar"><select id="weekSel"></select>
-<button id="suggest">Woche ausbalancieren</button>
-<button id="reset">Woche zuruecksetzen</button>
-<button id="resetAll">Alles zuruecksetzen</button></div>
+<div class="tabs">
+<button class="tab active" id="tabOv">Gesamtplan</button>
+<button class="tab" id="tabWk">Woche im Detail</button>
+</div>
+
+<div id="ovView">
+<div class="bar"><span class="phase">Klicke auf eine Woche, um sie im Detail zu bearbeiten.</span></div>
+<div style="overflow-x:auto"><table class="ov"><thead><tr>
+<th>Wo</th><th>Phase</th><th>Datum</th><th>Mo</th><th>Di</th><th>Mi</th><th>Do</th><th>Fr</th><th>Sa</th><th>So</th><th>km</th><th>HM</th>
+</tr></thead><tbody id="ovBody"></tbody></table></div>
+</div>
+
+<div id="wkView" class="hide">
+<div class="bar">
+<select class="week" id="weekSel"></select>
+<button class="btn orange" id="suggest">Woche ausbalancieren</button>
+<button class="btn ghost" id="reset">Woche zuruecksetzen</button>
+<button class="btn ghost" id="resetAll">Alles zuruecksetzen</button>
+</div>
 <div class="phase" id="phase"></div>
 <div class="stats">
 <div class="stat"><b id="kmDone">0</b><span>km erledigt</span></div>
@@ -43,14 +83,17 @@ input.km{width:56px;background:#121c26;color:#e7eef5;border:1px solid #2c3a48;bo
 <div id="chart"></div>
 <div class="balance" id="balance"></div>
 <div class="legend" id="legend"></div>
-<table><thead><tr><th></th><th>OK</th><th>Tag</th><th>Einheit</th><th>km</th><th>Typ</th><th>Last</th></tr></thead><tbody id="body"></tbody></table>
+<div style="overflow-x:auto"><table><thead><tr><th></th><th>OK</th><th>Tag</th><th>Einheit</th><th>km</th><th>Typ</th><th>Last</th></tr></thead><tbody id="body"></tbody></table></div>
+<p style="color:#6b7783;font-size:.8rem">Tipp: Zeile am Griff &#9776; packen und verschieben. Der Typ wird automatisch aus dem Text erkannt.</p>
+</div>
+</div>
 <script>
 var S=document.getElementById("status");
 try{
-var COL={easy:"#3b82f6",long:"#ef4444",interval:"#a855f7",threshold:"#f59e0b",tempo:"#ec4899",fartlek:"#14b8a6",strength:"#64748b",rest:"#334155",race:"#eab308"};
+var COL={easy:"#3b82f6",long:"#ef4444",interval:"#a855f7",threshold:"#f59e0b",tempo:"#ec4899",fartlek:"#14b8a6",strength:"#64748b",rest:"#9aa5b1",race:"#FF6600"};
 var LAB={easy:"Easy",long:"Long Run",interval:"Intervall",threshold:"Schwelle",tempo:"Tempo",fartlek:"Fartlek",strength:"Kraft",rest:"Ruhe",race:"Wettkampf"};
 var INT={rest:0,strength:2,easy:1,long:4,interval:4,threshold:3,tempo:3,fartlek:3,race:5};
-var WD=["Mo","Di","Mi","Do","Fr","Sa","So"],KEY="stefan-jf-v6";
+var WD=["Mo","Di","Mi","Do","Fr","Sa","So"],KEY="stefan-jf-v7";
 function cls(t){t=(t||"").toUpperCase();if(!t.replace(/\s/g,""))return"rest";
 if(t.indexOf("RENN-SIM")>-1)return"long";if(t.indexOf("RACE")>-1)return"race";
 if(t.indexOf("OFF")===0||t.indexOf("AUSROLLEN")===0)return"rest";
@@ -106,12 +149,29 @@ var DATA=
 "43|Race|06.09.27|JUNGFRAU-MARATHON 11.09.|Off~ESR 6km~ESR 5km~Off~Off~RACE DAY 42.2km HM1829~Ausrollen";
 function build(){return DATA.split("\n").map(function(line){
 var p=line.split("|");var days=p[4].split("~").map(function(t,i){
-return{day:WD[i],text:t,km:km(t),hm:hm(t),typ:cls(t),done:false};});
+return{day:WD[i],text:t,km:km(t),hm:hm(t),done:false};});
 return{woche:+p[0],phase:p[1],datum:p[2],bemerkung:p[3],days:days};});}
 var weeks=[],cur=0;
 function load(){try{var s=localStorage.getItem(KEY);weeks=s?JSON.parse(s):build();}catch(e){weeks=build();}
 if(!Array.isArray(weeks)||!weeks.length)weeks=build();}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(weeks));}catch(e){}}
+function esc(s){return(s||"").replace(/</g,"&lt;");}
+function showView(v){document.getElementById("ovView").className=v==="ov"?"":"hide";
+document.getElementById("wkView").className=v==="wk"?"":"hide";
+document.getElementById("tabOv").className="tab"+(v==="ov"?" active":"");
+document.getElementById("tabWk").className="tab"+(v==="wk"?" active":"");}
+document.getElementById("tabOv").onclick=function(){showView("ov");renderOv();};
+document.getElementById("tabWk").onclick=function(){showView("wk");render();};
+function renderOv(){var b=document.getElementById("ovBody");b.innerHTML="";
+weeks.forEach(function(w,wi){var tr=document.createElement("tr");
+var tot=w.days.reduce(function(s,d){return s+d.km;},0);
+var th=w.days.reduce(function(s,d){return s+d.hm;},0);
+var cells="";w.days.forEach(function(d){var t=cls(d.text);
+cells+='<td><span class="cell" style="background:'+COL[t]+'22;border-left:3px solid '+COL[t]+'">'+esc(d.text)+'</span></td>';});
+tr.innerHTML='<td class="wk">'+w.woche+'</td><td>'+esc(w.phase)+'</td><td>'+esc(w.datum)+'</td>'+cells+
+'<td><b>'+Math.round(tot)+'</b></td><td>'+th+'</td>';
+tr.onclick=function(){cur=wi;showView("wk");render();};
+b.appendChild(tr);});}
 function sel(){var s=document.getElementById("weekSel");s.innerHTML="";
 weeks.forEach(function(w,i){var o=document.createElement("option");o.value=i;o.textContent="Woche "+w.woche+" - "+w.phase;s.appendChild(o);});s.value=cur;}
 document.getElementById("weekSel").addEventListener("change",function(e){cur=+e.target.value;render();});
@@ -120,17 +180,16 @@ Object.keys(LAB).forEach(function(k){l.innerHTML+='<span><i class="dot" style="b
 function render(){var w=weeks[cur];if(!w)return;document.getElementById("weekSel").value=cur;
 document.getElementById("phase").textContent="Phase: "+w.phase+" - Start "+w.datum+(w.bemerkung?" - "+w.bemerkung:"");
 var b=document.getElementById("body");b.innerHTML="";
-w.days.forEach(function(d,i){var tr=document.createElement("tr");
+w.days.forEach(function(d,i){var tr=document.createElement("tr");var t=cls(d.text);
 tr.className="row"+(d.done?" done":"");tr.draggable=true;
 tr.innerHTML='<td class="handle">&#9776;</td><td><input type="checkbox" '+(d.done?"checked":"")+' data-a="done"></td>'+
-'<td class="wd">'+WD[i]+'</td><td><textarea data-a="text">'+d.text.replace(/</g,"&lt;")+'</textarea></td>'+
+'<td class="wd">'+WD[i]+'</td><td><textarea data-a="text">'+esc(d.text)+'</textarea></td>'+
 '<td><input class="km" type="number" step="0.1" value="'+d.km+'" data-a="km"></td>'+
-'<td><select data-a="typ">'+Object.keys(LAB).map(function(k){return '<option value="'+k+'" '+(k===d.typ?"selected":"")+'>'+LAB[k]+'</option>';}).join("")+'</select></td>'+
-'<td><span class="pill" style="background:'+COL[d.typ]+'">'+INT[d.typ]+'</span></td>';
+'<td><span class="pill" style="background:'+COL[t]+'">'+LAB[t]+'</span></td>'+
+'<td><span class="pill" style="background:'+COL[t]+'">'+INT[t]+'</span></td>';
 tr.querySelector('[data-a=done]').onchange=function(e){d.done=e.target.checked;save();render();};
-tr.querySelector('[data-a=text]').onchange=function(e){d.text=e.target.value;d.km=km(d.text);d.hm=hm(d.text);d.typ=cls(d.text);save();render();};
+tr.querySelector('[data-a=text]').onchange=function(e){d.text=e.target.value;d.km=km(d.text);d.hm=hm(d.text);save();render();};
 tr.querySelector('[data-a=km]').onchange=function(e){d.km=parseFloat(e.target.value)||0;save();stats();chart();};
-tr.querySelector('[data-a=typ]').onchange=function(e){d.typ=e.target.value;save();render();};
 tr.addEventListener("dragstart",function(e){e.dataTransfer.setData("t",i);});
 tr.addEventListener("dragover",function(e){e.preventDefault();tr.classList.add("dragover");});
 tr.addEventListener("dragleave",function(){tr.classList.remove("dragover");});
@@ -143,7 +202,7 @@ var pl=w.days.reduce(function(s,d){return s+d.km;},0);
 var dn=w.days.filter(function(d){return d.done;}).reduce(function(s,d){return s+d.km;},0);
 var bl=weeks.reduce(function(s,x){return s+x.days.reduce(function(a,d){return a+d.km;},0);},0);
 var h=w.days.reduce(function(s,d){return s+d.hm;},0);
-var ld=w.days.reduce(function(s,d){return s+INT[d.typ];},0);
+var ld=w.days.reduce(function(s,d){return s+INT[cls(d.text)];},0);
 document.getElementById("kmPlan").textContent=Math.round(pl);
 document.getElementById("kmDone").textContent=Math.round(dn);
 document.getElementById("prog").textContent=(pl?Math.round(dn/pl*100):0)+"%";
@@ -152,29 +211,29 @@ document.getElementById("hmW").textContent=h;
 document.getElementById("load").textContent=ld;}
 function chart(){var w=weeks[cur];var mx=1;w.days.forEach(function(d){if(d.km>mx)mx=d.km;});
 var bw=44,gap=14,h=140,W=w.days.length*(bw+gap)+20,s="";
-w.days.forEach(function(d,i){var bh=d.km/mx*(h-30),x=10+i*(bw+gap),y=h-bh-18;
-s+='<rect x="'+x+'" y="'+y+'" width="'+bw+'" height="'+bh+'" rx="4" fill="'+COL[d.typ]+'"></rect>'+
-'<text x="'+(x+bw/2)+'" y="'+(y-4)+'" fill="#e7eef5" font-size="11" text-anchor="middle">'+(d.km||"")+'</text>'+
-'<text x="'+(x+bw/2)+'" y="'+(h-4)+'" fill="#93a4b3" font-size="11" text-anchor="middle">'+WD[i]+'</text>';});
+w.days.forEach(function(d,i){var t=cls(d.text);var bh=d.km/mx*(h-30),x=10+i*(bw+gap),y=h-bh-18;
+s+='<rect x="'+x+'" y="'+y+'" width="'+bw+'" height="'+bh+'" rx="4" fill="'+COL[t]+'"></rect>'+
+'<text x="'+(x+bw/2)+'" y="'+(y-4)+'" fill="#2b3138" font-size="11" text-anchor="middle">'+(d.km||"")+'</text>'+
+'<text x="'+(x+bw/2)+'" y="'+(h-4)+'" fill="#6b7783" font-size="11" text-anchor="middle">'+WD[i]+'</text>';});
 document.getElementById("chart").innerHTML='<svg width="100%" viewBox="0 0 '+W+' '+h+'">'+s+'</svg>';}
 function balance(){var w=weeks[cur],bx=document.getElementById("balance");
-var hard=w.days.map(function(d){return INT[d.typ]>=3;});
+var hard=w.days.map(function(d){return INT[cls(d.text)]>=3;});
 var rows=document.querySelectorAll("#body tr");rows.forEach(function(t){t.classList.remove("warn");});
 var c=[];for(var i=0;i<hard.length-1;i++){if(hard[i]&&hard[i+1]){c.push(i);
 if(rows[i])rows[i].classList.add("warn");if(rows[i+1])rows[i+1].classList.add("warn");}}
 if(c.length){bx.className="balance bad";bx.innerHTML="Nicht ausbalanciert: "+c.length+"x zwei harte Tage direkt hintereinander ("+c.map(function(i){return WD[i]+"-"+WD[i+1];}).join(", ")+"). Klicke Woche ausbalancieren.";}
 else{bx.className="balance ok";bx.innerHTML="Ausgewogen: keine zwei harten Tage direkt hintereinander - Reize und Erholung im Gleichgewicht.";}}
 document.getElementById("suggest").onclick=function(){var w=weeks[cur];
-var hd=w.days.filter(function(d){return INT[d.typ]>=3;});
-var ea=w.days.filter(function(d){return INT[d.typ]<3;});
+var hd=w.days.filter(function(d){return INT[cls(d.text)]>=3;});
+var ea=w.days.filter(function(d){return INT[cls(d.text)]<3;});
 var r=[],hi=0,ei=0;while(hi<hd.length||ei<ea.length){if(hi<hd.length)r.push(hd[hi++]);if(ei<ea.length)r.push(ea[ei++]);}
-for(var i=0;i<r.length-1;i++){if(INT[r[i].typ]>=3&&INT[r[i+1].typ]>=3){
-var j=-1;for(var k=i+2;k<r.length;k++){if(INT[r[k].typ]<3){j=k;break;}}
+for(var i=0;i<r.length-1;i++){if(INT[cls(r[i].text)]>=3&&INT[cls(r[i+1].text)]>=3){
+var j=-1;for(var k=i+2;k<r.length;k++){if(INT[cls(r[k].text)]<3){j=k;break;}}
 if(j>-1){var e=r.splice(j,1)[0];r.splice(i+1,0,e);}}}
 r.forEach(function(d,k){d.day=WD[k];});w.days=r;save();render();};
-document.getElementById("reset").onclick=function(){weeks[cur]=build()[cur];save();render();};
-document.getElementById("resetAll").onclick=function(){if(confirm("Alle Aenderungen verwerfen?")){try{localStorage.removeItem(KEY);}catch(e){}load();sel();render();}};
-load();sel();leg();render();
+document.getElementById("reset").onclick=function(){weeks[cur]=build()[cur];save();render();renderOv();};
+document.getElementById("resetAll").onclick=function(){if(confirm("Alle Aenderungen verwerfen?")){try{localStorage.removeItem(KEY);}catch(e){}load();sel();render();renderOv();}};
+load();sel();leg();renderOv();
 S.textContent=weeks.length+" Wochen geladen. Alles bereit.";
 }catch(err){S.className="bad";S.textContent="Fehler: "+err.message;}
 </script></body></html>
